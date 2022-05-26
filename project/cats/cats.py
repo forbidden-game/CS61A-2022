@@ -298,6 +298,18 @@ def report_progress(sofar, prompt, user_id, upload):
     """
     # BEGIN PROBLEM 8
     "*** YOUR CODE HERE ***"
+    prompt_length = len(prompt)
+    same = 0
+
+    for i in range(len(sofar)):
+        if sphinx_swaps(sofar[i], prompt[i], 0):
+            break
+        same += 1
+
+    progress = same / prompt_length
+    upload({'id': user_id, 'progress': progress})
+    return progress
+
     # END PROBLEM 8
 
 
