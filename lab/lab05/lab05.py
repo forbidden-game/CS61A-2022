@@ -11,13 +11,21 @@ def flatten(s):
     [1, 2, 3, 4]
     >>> x # Ensure x is not mutated
     [1, [2, 3], 4]
-    >>> x = [[1, [1, 1]], 1, [1, 1]] # deep list
+    >>> x = [[1, [2, 3]], 4, [5, 6]] # deep list
     >>> flatten(x)
-    [1, 1, 1, 1, 1, 1]
+    [1, 2, 3, 4, 5, 6]
     >>> x
-    [[1, [1, 1]], 1, [1, 1]]
+    [[1, [2, 3]], 4, [5, 6]]
     """
     "*** YOUR CODE HERE ***"
+    if not s:
+        return []
+    elif type(s[0]) == list:
+        return flatten(s[0]) + flatten(s[1:])
+    else:
+        return [s[0]] + flatten(s[1:])
+
+
 
 
 def couple(s, t):
@@ -34,7 +42,7 @@ def couple(s, t):
     """
     assert len(s) == len(t)
     "*** YOUR CODE HERE ***"
-
+    return [[s[i], t[i]] for i in range(len(s))]
 
 def insert_items(lst, entry, elem):
     """Inserts elem into lst after each occurence of entry and then returns lst.
@@ -63,7 +71,13 @@ def insert_items(lst, entry, elem):
     True
     """
     "*** YOUR CODE HERE ***"
-
+    i = 0
+    while i < len(lst):
+        if lst[i] == entry:
+            lst.insert(i+1, elem)
+            i += 1
+        i += 1
+    return lst
 
 def change_abstraction(change):
     """
