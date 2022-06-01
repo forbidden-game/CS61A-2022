@@ -11,6 +11,12 @@ def merge(lst1, lst2):
     [2, 4, 5, 6, 7]
     """
     "*** YOUR CODE HERE ***"
+    if lst1 and lst2:
+        return [lst1[0]] + merge(lst1[1:], lst2) if lst1[0] < lst2[0] else [lst2[0]] + merge(lst1, lst2[1:])
+    elif lst1 and not lst2:
+        return lst1
+    else:
+        return lst2
 
 
 class Mint:
@@ -49,9 +55,11 @@ class Mint:
 
     def create(self, coin):
         "*** YOUR CODE HERE ***"
+        return coin(self.year)
 
     def update(self):
         "*** YOUR CODE HERE ***"
+        self.year = Mint.present_year
 
 
 class Coin:
@@ -62,6 +70,8 @@ class Coin:
 
     def worth(self):
         "*** YOUR CODE HERE ***"
+        long = Mint.present_year - self.year
+        return self.cents + long - 50 if long > 50 else self.cents
 
 
 class Nickel(Coin):
@@ -110,3 +120,35 @@ class VendingMachine:
     'Here is your soda.'
     """
     "*** YOUR CODE HERE ***"
+    def __init__(self, name, price):
+        self.name = name
+        self.price = price
+        self.quantity = 0
+        self.funds = 0
+
+    def vend(self):
+        if self.quantity == 0:
+            print('\'Nothing left to vend. Please restock.\'')
+        else:
+            change = self.funds - self.price
+            if change < 0:
+                print(f'\'You must add ${-change} more funds.\'')
+            elif change == 0:
+                print(f'\'Here is your {self.name}.\'')
+                self.funds = 0
+                self.quantity -= 1
+            else:
+                print(f'\'Here is your {self.name} and ${change} change.\'')
+                self.funds = 0
+                self.quantity -= 1
+
+    def add_funds(self, fund):
+        if self.quantity == 0:
+            print(f'\'Nothing left to vend. Please restock. Here is your ${fund}.\'')
+        else:
+            self.funds += fund
+            print(f'\'Current balance: ${self.funds}\'')
+
+    def restock(self, amount):
+        self.quantity += amount
+        print(f'\'Current {self.name} stock: {self.quantity}\'')
