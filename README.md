@@ -1,3 +1,3 @@
-UCB CS61A Solutions
+# UCB CS61A 2022 Solutions
 
-UCB CS61A 答案
+UCB CS61A 2022 答案
