@@ -8,7 +8,6 @@ class Cat:
     def talk(self):
         return self.name + ' says meow!'
 
-
 class NoisyCat(Cat):
     """
     >>> my_cat = NoisyCat("Furball", "James")
@@ -28,7 +27,8 @@ class NoisyCat(Cat):
     """
 
     def __init__(self, name, owner, lives=9):
-        "*** YOUR CODE HERE ***"
+        super().__init__(name, owner,lives - 1)
 
     def talk(self):
         "*** YOUR CODE HERE ***"
+        return self.name + ' says meow!' + ' ' + self.name + ' says meow!'

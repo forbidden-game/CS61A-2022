@@ -36,7 +36,7 @@ class Cat:
         """
         cat_names = ["Felix", "Bugs", "Grumpy"]
         "*** YOUR CODE HERE ***"
-        return cls(____, ____, ____)
+        return cls(cat_names[len(owner) % 3], owner, len(owner) + len(cat_names[len(owner) % 3]))
 
 
 class Account:
@@ -80,7 +80,12 @@ class Account:
         """Return the number of years until balance would grow to amount."""
         assert self.balance > 0 and amount > 0 and self.interest > 0
         "*** YOUR CODE HERE ***"
-
+        total = self.balance
+        i = 0
+        while total < amount:
+            total *= (1 + self.interest)
+            i += 1
+        return i
 
 class FreeChecking(Account):
     """A bank account that charges for withdrawals, but the first two are free!
@@ -109,3 +114,21 @@ class FreeChecking(Account):
     free_withdrawals = 2
 
     "*** YOUR CODE HERE ***"
+    def withdraw(self, amount):
+        if self.free_withdrawals:
+            if amount > self.balance:
+                self.free_withdrawals -= 1
+                return "Insufficient funds"
+            if amount > self.max_withdrawal:
+                self.free_withdrawals -= 1
+                return "Can't withdraw that amount"
+            self.balance = self.balance - amount
+            self.free_withdrawals -= 1
+            return self.balance
+        else:
+            if amount > self.balance - self.withdraw_fee:
+                return "Insufficient funds"
+            if amount > self.max_withdrawal:
+                return "Can't withdraw that amount"
+            self.balance = self.balance - amount - self.withdraw_fee
+            return self.balance
