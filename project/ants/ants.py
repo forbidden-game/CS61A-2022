@@ -290,10 +290,45 @@ class FireAnt(Ant):
 
 # BEGIN Problem 6
 # The WallAnt class
+class WallAnt(Ant):
+    """
+    An ant that does nothing each turn.
+    """
+
+    name = 'Wall'
+    food_cost = 4
+    implemented = True
+
+    def __init__(self, health=4):
+        """Create an Ant with a HEALTH quantity."""
+        super().__init__(health)
 # END Problem 6
 
 # BEGIN Problem 7
 # The HungryAnt Class
+class HungryAnt(Ant):
+    """
+    Select a random Bee from its place and deal damage to the bee by eating it whole.
+    """
+
+    name = 'Hungry'
+    food_cost = 4
+    implemented = True
+    time_to_chew = 3
+
+    def __init__(self, health=1, chew_timer=0):
+        """Create an Ant with a HEALTH quantity."""
+        super().__init__(health)
+        self.chew_timer = chew_timer
+
+    def action(self, gamestate):
+        if self.chew_timer == 0:
+            bee = random_bee(self.place.bees)
+            if bee:
+                bee.reduce_health(bee.health)
+                self.chew_timer = HungryAnt.time_to_chew
+        else:
+            self.chew_timer -= 1
 # END Problem 7
 
 
