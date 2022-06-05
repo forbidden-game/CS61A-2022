@@ -421,6 +421,24 @@ class BodyguardAnt(ContainerAnt):
 
 # BEGIN Problem 9
 # The TankAnt class
+class TankAnt(ContainerAnt):
+    """
+    The TankAnt is a container that protects an ant in its place and also deals 1 damage to all bees in its place each turn.
+    """
+
+    name = 'Tank'
+    damage = 1
+    food_cost = 6
+    implemented = True
+
+    def __init__(self, health=2):
+        super().__init__(health)
+
+    def action(self, gamestate):
+        if self.ant_contained:
+            self.ant_contained.action(gamestate)
+        for bee in self.place.bees[:]:
+            bee.reduce_health(self.damage)
 # END Problem 9
 
 
