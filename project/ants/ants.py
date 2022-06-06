@@ -774,8 +774,11 @@ class LaserAnt(ThrowerAnt):
     name = 'Laser'
     food_cost = 10
     # OVERRIDE CLASS ATTRIBUTES HERE
+    damage = 2
+    damage_goes_down_by_turn = 0.0625
+    damage_goes_down_by_dis = 0.25
     # BEGIN Problem Optional 2
-    implemented = False  # Change to True to view in the GUI
+    implemented = True  # Change to True to view in the GUI
 
     # END Problem Optional 2
 
@@ -785,12 +788,32 @@ class LaserAnt(ThrowerAnt):
 
     def insects_in_front(self):
         # BEGIN Problem Optional 2
-        return {}
+        insects = {}
+        distance = 0
+        place = self.place
+
+        while not place.is_hive:
+            if place.ant and place.ant is not self:
+                if place.ant.is_container and place.ant.ant_contained:
+                    insects[place.ant.ant_contained] = distance
+                insects[place.ant] = distance
+
+            if place.bees:
+                for bee in place.bees:
+                    insects[bee] = distance
+
+            place = place.entrance
+            distance += 1
+
+        return insects
+
         # END Problem Optional 2
 
     def calculate_damage(self, distance):
         # BEGIN Problem Optional 2
-        return 0
+        damage = LaserAnt.damage - LaserAnt.damage_goes_down_by_turn * self.insects_shot - \
+                 LaserAnt.damage_goes_down_by_dis * distance
+        return damage if damage else 0
         # END Problem Optional 2
 
     def action(self, gamestate):
@@ -874,7 +897,7 @@ class Hive(Place):
         self.exit = None
 
     def strategy(self, gamestate):
-        exits = [p for p in gamestate.places_have_ant.values() if p.entrance is self]
+        exits = [p for p in gamestate.places.values() if p.entrance is self]
         for bee in self.assault_plan.get(gamestate.time, []):
             bee.move_to(random.choice(exits))
             gamestate.active_bees.append(bee)
