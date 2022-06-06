@@ -585,6 +585,12 @@ class Bee(Insect):
     # OVERRIDE CLASS ATTRIBUTES HERE
     is_waterproof = True
 
+    def __init__(self, health, place=None):
+        super().__init__(health, place)
+        self.times_to_backwards = 0
+        self.remain_slow_time = 0
+        self.scared = False
+
     def sting(self, ant):
         """Attack an ANT, reducing its health by 1."""
         ant.reduce_health(self.damage)
@@ -601,19 +607,52 @@ class Bee(Insect):
         return self.place.ant is not None
         # END Problem Optional 1
 
+    def basic_action(self):
+        destination = self.place.exit
+
+        if self.blocked():
+            self.sting(self.place.ant)
+        elif self.health > 0 and destination is not None:
+            self.move_to(destination)
+
+    def scared_action(self):
+        destination = self.place.entrance
+
+        if self.blocked():
+            self.sting(self.place.ant)
+        elif self.health > 0:
+            if not destination.is_hive:
+                self.move_to(destination)
+            else:
+                pass
+            self.times_to_backwards -= 1
+
     def action(self, gamestate):
         """A Bee's action stings the Ant that blocks its exit if it is blocked,
         or moves to the exit of its current place otherwise.
 
         gamestate -- The GameState, used to access game state information.
         """
-        destination = self.place.exit
 
-        # Extra credit: Special handling for bee direction
-        if self.blocked():
-            self.sting(self.place.ant)
-        elif self.health > 0 and destination is not None:
-            self.move_to(destination)
+        if not self.remain_slow_time and not self.times_to_backwards:
+            self.basic_action()
+
+        elif self.remain_slow_time and not self.times_to_backwards:
+            if gamestate.time % 2 == 0:
+                self.basic_action()
+            else:
+                pass
+            self.remain_slow_time -= 1
+
+        elif not self.remain_slow_time and self.times_to_backwards:
+            self.scared_action()
+
+        else:
+            if gamestate.time % 2 == 0:
+                self.scared_action()
+            else:
+                pass
+            self.remain_slow_time -= 1
 
     def add_to(self, place):
         place.bees.append(self)
@@ -627,15 +666,19 @@ class Bee(Insect):
         """Slow the bee for a further LENGTH turns."""
         # BEGIN Problem EC
         "*** YOUR CODE HERE ***"
+        self.remain_slow_time += length
         # END Problem EC
 
-    def scare(self, length):
+    def scare(self, length=2):
         """
         If this Bee has not been scared before, cause it to attempt to
         go backwards LENGTH times.
         """
         # BEGIN Problem EC
         "*** YOUR CODE HERE ***"
+        if not self.scared:
+            self.times_to_backwards = length
+            self.scared = True
         # END Problem EC
 
 
@@ -674,8 +717,11 @@ class SlowThrower(ThrowerAnt):
     name = 'Slow'
     food_cost = 4
     # BEGIN Problem EC
-    implemented = False  # Change to True to view in the GUI
+    damage = 0
+    implemented = True  # Change to True to view in the GUI
 
+    def __init__(self, health=1):
+        super(SlowThrower, self).__init__(health)
     # END Problem EC
 
     def throw_at(self, target):
@@ -689,13 +735,18 @@ class ScaryThrower(ThrowerAnt):
     name = 'Scary'
     food_cost = 6
     # BEGIN Problem EC
-    implemented = False  # Change to True to view in the GUI
+    damage = 0
+    implemented = True  # Change to True to view in the GUI
 
+    def __init__(self, health=1):
+        super(ScaryThrower, self).__init__(health)
     # END Problem EC
 
     def throw_at(self, target):
         # BEGIN Problem EC
         "*** YOUR CODE HERE ***"
+        if target:
+            target.scare()
         # END Problem EC
 
 
