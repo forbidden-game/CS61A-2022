@@ -608,6 +608,9 @@ class Bee(Insect):
         # END Problem Optional 1
 
     def basic_action(self):
+        """
+        Bee's action in normal.
+        """
         destination = self.place.exit
 
         if self.blocked():
@@ -616,6 +619,9 @@ class Bee(Insect):
             self.move_to(destination)
 
     def scared_action(self):
+        """
+        Bee's action when scared.
+        """
         destination = self.place.entrance
 
         if self.blocked():
