@@ -130,7 +130,7 @@ class AntsGUI:
         width = BEE_IMAGE_WIDTH + 2 * PLACE_PADDING[0]
         height = ANT_IMAGE_HEIGHT + 2 * PLACE_PADDING[1]
         rows = 0
-        for name, place in gamestate.places.items():
+        for name, place in gamestate.places_have_ant.items():
             if place.name == 'Hive':
                 continue  # Handled as a special case later
             if place.exit.name == 'Ant Home Base':
@@ -140,7 +140,7 @@ class AntsGUI:
 
             def on_click(gamestate, frame, name=name):
                 ant_type = self.ant_type_selected
-                existing_ant = gamestate.places[name].ant
+                existing_ant = gamestate.places_have_ant[name].ant
                 if ant_type == 'Remover':
                     if existing_ant is not None:
                         print("gamestate.remove_ant('{0}')".format(name))
@@ -166,7 +166,7 @@ class AntsGUI:
         self.images[gamestate.beehive.name] = dict()
         self.place_points[gamestate.beehive.name] = (place_pos[0] + width,
                                                HIVE_HEIGHT)
-        self.laser_end = (BEE_IMAGE_WIDTH + 2 * PLACE_PADDING[0]) * len(gamestate.places)
+        self.laser_end = (BEE_IMAGE_WIDTH + 2 * PLACE_PADDING[0]) * len(gamestate.places_have_ant)
         for bee in gamestate.beehive.bees:
             self._draw_insect(bee, gamestate.beehive.name, True)
 
@@ -227,7 +227,7 @@ class AntsGUI:
           - Moving Bee images for bees that have advanced
           - Moving insects out of play when they have expired
         """
-        for name, place in gamestate.places.items():
+        for name, place in gamestate.places_have_ant.items():
             if place.name == 'Hive':
                 continue
             current = self.images[name].keys()

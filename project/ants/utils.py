@@ -70,9 +70,9 @@ def print_thrower_target(self, rv, *args):
     >>> thrower = ThrowerAnt()
     >>> short = ShortThrower()
     >>> bee = Bee(5)
-    >>> gamestate.places['tunnel_0_1'].add_insect(short)
-    >>> gamestate.places['tunnel_0_0'].add_insect(thrower)
-    >>> gamestate.places['tunnel_0_5'].add_insect(bee)
+    >>> gamestate.places_have_ant['tunnel_0_1'].add_insect(short)
+    >>> gamestate.places_have_ant['tunnel_0_0'].add_insect(thrower)
+    >>> gamestate.places_have_ant['tunnel_0_5'].add_insect(bee)
     >>> thrower.action(gamestate)
     ThrowerAnt(1, tunnel_0_0) targeted Bee(5, tunnel_0_5)
     >>> short.action(gamestate)    # Bee not in range of ShortThrower

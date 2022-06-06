@@ -112,7 +112,7 @@ class Ant(Insect):
 
     # ADD CLASS ATTRIBUTES HERE
     damage = 0
-
+    doubled = False
     def __init__(self, health=1):
         """Create an Insect with a HEALTH quantity."""
         super().__init__(health)
@@ -168,7 +168,9 @@ class Ant(Insect):
         """Double this ants's damage, if it has not already been doubled."""
         # BEGIN Problem 12
         "*** YOUR CODE HERE ***"
-        self.damage *= 2
+        if not self.doubled:
+            self.damage *= 2
+            self.doubled = True
         # END Problem 12
 
 
@@ -281,7 +283,6 @@ class FireAnt(Ant):
     # OVERRIDE CLASS ATTRIBUTES HERE
     damage = 3
     food_cost = 5
-    doubled = False
     # BEGIN Problem 5
     implemented = True  # Change to True to view in the GUI
 
@@ -310,11 +311,6 @@ class FireAnt(Ant):
                 bee.reduce_health(demage_bee)
             Ant.reduce_health(self, amount)
         # END Problem 5
-
-    def double(self):
-        if not self.doubled:
-            self.damage *= 2
-            self.doubled = True
 
 
 # BEGIN Problem 6
@@ -496,7 +492,6 @@ class QueenAnt(ScubaThrower):  # You should change this line
     name = 'Queen'
     food_cost = 7
     # OVERRIDE CLASS ATTRIBUTES HERE
-    places = []
     ants_doubled = []
     # BEGIN Problem 12
     implemented = True  # Change to True to view in the GUI
@@ -531,24 +526,28 @@ class QueenAnt(ScubaThrower):  # You should change this line
         super().action(gamestate)
 
         place_exit = self.place.exit
+        places_have_ant = []
 
         while place_exit:
             if place_exit.ant:
-                QueenAnt.places.append(place_exit)
+                places_have_ant.append(place_exit)
             place_exit = place_exit.exit
 
-        for place in QueenAnt.places:
+        for place in places_have_ant:
             ant = place.ant
-            if ant not in QueenAnt.ants_doubled:
-                if ant.is_container:
-                    if ant.ant_contained and ant.ant_contained is not self:
-                        ant.double()
-                        ant.ant_contained.double()
-                        QueenAnt.ants_doubled.append(ant)
-                        QueenAnt.ants_doubled.append(ant.ant_contained)
-                else:
+            if not ant.is_container:
+                if not ant.doubled:
                     ant.double()
-                    QueenAnt.ants_doubled.append(ant)
+                    ant.doubled = True
+            else:
+                if ant.ant_contained is not self:
+                    if not ant.doubled:
+                        ant.double()
+                        ant.doubled = True
+                    if ant.ant_contained:
+                        if not ant.ant_contained.doubled:
+                            ant.ant_contained.double()
+                            ant.ant_contained.doubled = True
         # END Problem 12
 
     def reduce_health(self, amount):
@@ -806,7 +805,7 @@ class Hive(Place):
         self.exit = None
 
     def strategy(self, gamestate):
-        exits = [p for p in gamestate.places.values() if p.entrance is self]
+        exits = [p for p in gamestate.places_have_ant.values() if p.entrance is self]
         for bee in self.assault_plan.get(gamestate.time, []):
             bee.move_to(random.choice(exits))
             gamestate.active_bees.append(bee)

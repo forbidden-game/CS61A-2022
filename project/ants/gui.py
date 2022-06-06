@@ -147,7 +147,7 @@ class GUI:
         self.images = {'AntQueen': dict()}
         rows = 0
         cols = 0
-        for name, place in gamestate.places.items():
+        for name, place in gamestate.places_have_ant.items():
             if place.name == 'Hive':
                 continue
             pCol = self.get_place_column(name)
@@ -179,7 +179,7 @@ class GUI:
         old_insects = self.insects[:]
         old_bees = self.bees[:]
         self.bees, self.insects = [], []
-        for name, place in gamestate.places.items():
+        for name, place in gamestate.places_have_ant.items():
             if place.name == 'Hive':
                 continue
             pCol = self.get_place_column(name)
@@ -217,7 +217,7 @@ class GUI:
         # Check to see if the ant is a remover. If so we need to remove the ant in pname
         pname, ant = data["pname"], data["ant"]
         if ant == "Remover":
-            existing_ant = self.gamestate.places[pname].ant
+            existing_ant = self.gamestate.places_have_ant[pname].ant
             if existing_ant is not None:
                 print("gamestate.remove_ant('{0}')".format(pname))
                 self.gamestate.remove_ant(pname)
