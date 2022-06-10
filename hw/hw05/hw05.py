@@ -80,6 +80,7 @@ def duplicate_link(lnk, val):
         if lnk.rest:
             return duplicate_link(lnk.rest, val)
 
+
 def deep_map_mut(fn, lnk):
     """Mutates a deep link lnk by replacing each item found with the
     result of calling fn on the item.  Does NOT create new Links (so
