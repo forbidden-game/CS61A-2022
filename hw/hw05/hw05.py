@@ -70,7 +70,15 @@ def duplicate_link(lnk, val):
     Link(2, Link(4, Link(6, Link(8))))
     """
     "*** YOUR CODE HERE ***"
-
+    if lnk.first == val:
+        orgin_first = lnk.first
+        lnk.first = val
+        lnk.rest = Link(orgin_first, lnk.rest)
+        if lnk.rest.rest:
+            return duplicate_link(lnk.rest.rest, val)
+    else:
+        if lnk.rest:
+            return duplicate_link(lnk.rest, val)
 
 def deep_map_mut(fn, lnk):
     """Mutates a deep link lnk by replacing each item found with the
