@@ -43,6 +43,15 @@ def has_path(t, term):
     """
     assert len(term) > 0, 'no path for empty term.'
     "*** YOUR CODE HERE ***"
+    if t.label != term[0]:
+        return False
+    elif len(term) == 1:
+        return True
+    else:
+        for b in t.branches:
+            if has_path(b, term[1:]):
+                return True
+        return False
 
 
 def duplicate_link(lnk, val):
@@ -116,6 +125,7 @@ class Tree:
             for b in t.branches:
                 tree_str += print_tree(b, indent + 1)
             return tree_str
+
         return print_tree(self).rstrip()
 
 
