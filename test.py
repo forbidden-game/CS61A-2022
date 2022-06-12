@@ -43,3 +43,13 @@ def add(ordered_list, new_val):
     elif new_val > ordered_list.first:
         add(ordered_list.rest, new_val)
     return ordered_list
+
+
+def termified(n, term):
+    """Returns every the result of calling TERM
+    on each element in the range from 0 to N (inclusive).
+
+    >>> termified(5, lambda x: 2 ** x)
+    [1, 2, 4, 8, 16, 32]
+    """
+    return [map(term, range(n + 1))]
