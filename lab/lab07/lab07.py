@@ -29,6 +29,30 @@ def store_digits(n):
     return head
 
 
+def store_digits(n):
+    """Stores the digits of a positive number n in a linked list.
+
+    >>> s = store_digits(1)
+    >>> s
+    Link(1)
+    >>> store_digits(2345)
+    Link(2, Link(3, Link(4, Link(5))))
+    >>> store_digits(876)
+    Link(8, Link(7, Link(6)))
+    >>> # a check for restricted functions
+    >>> import inspect, re
+    >>> cleaned = re.sub(r"#.*\\n", '', re.sub(r'"{3}[\s\S]*?"{3}', '', inspect.getsource(store_digits)))
+    >>> print("Do not use str or reversed!") if any([r in cleaned for r in ["str", "reversed"]]) else None
+    >>> link1 = Link(3, Link(Link(4), Link(5, Link(6))))
+    """
+    "*** YOUR CODE HERE ***"
+    l = Link.empty
+    while n > 0:
+        l = Link(n % 10, l)
+        n //= 10
+    return l
+
+
 def cumulative_mul(t):
     """Mutates t so that each node's label becomes the product of all labels in
     the corresponding subtree rooted at t.
@@ -47,7 +71,6 @@ def cumulative_mul(t):
         for b in t.branches:
             cumulative_mul(b)
             t.label *= b.label
-
 
 
 def has_cycle(link):
@@ -156,4 +179,5 @@ class Tree:
             for b in t.branches:
                 tree_str += print_tree(b, indent + 1)
             return tree_str
+
         return print_tree(self).rstrip()
