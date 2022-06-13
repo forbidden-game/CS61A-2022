@@ -15,6 +15,18 @@ def store_digits(n):
     >>> link1 = Link(3, Link(Link(4), Link(5, Link(6))))
     """
     "*** YOUR CODE HERE ***"
+    digits = []
+
+    while n:
+        digits.append(n % 10)
+        n = n // 10
+
+    head = Link(digits[0])
+
+    for i in range(1, len(digits)):
+        rest = Link(digits[i], head)
+        head = rest
+    return head
 
 
 def cumulative_mul(t):
