@@ -15,7 +15,12 @@ def reverse_link(lnk):
     Link(3, Link(5, Link(7, Link(9))))
     """
     "*** YOUR CODE HERE ***"
-
+    p1 = Link(lnk.first)
+    p2 = lnk.rest
+    while p2:
+        p1 = Link(p2.first, p1)
+        p2 = p2.rest
+    return p1
 
 class Link:
     empty = ()
