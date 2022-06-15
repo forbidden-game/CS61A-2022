@@ -157,6 +157,20 @@ def add_d_leaves(t, v):
         10
     """
     "*** YOUR CODE HERE ***"
+    def add_d_leaves_helper(t1, depth):
+        leaves = 0
+        for b in t1.branches:
+            add_d_leaves_helper(b, depth+1)
+            if b.is_leaf():
+                leaves += 1
+        while leaves < depth:
+            t1.branches.append(Tree(v))
+            leaves += 1
+
+    return add_d_leaves_helper(t, 0)
+
+
+
 
 
 def insert_into_all(item, nested_list):
