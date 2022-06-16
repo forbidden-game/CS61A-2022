@@ -223,6 +223,8 @@ def non_decrease_subseqs(s):
     >>> seqs2 = non_decrease_subseqs([1, 1, 2])
     >>> sorted(seqs2)
     [[], [1], [1], [1, 1], [1, 1, 2], [1, 2], [1, 2], [2]]
+     >>> seqs2 = non_decrease_subseqs([1, 3, 3, 2])
+    >>> sorted(seqs2)
     """
     def subseq_helper(s, prev):
         if not s:
@@ -262,11 +264,11 @@ def shuffle(cards):
     ['AH', 'AD', 'AS', 'AC', '2H', '2D', '2S', '2C', '3H', '3D', '3S', '3C']
     """
     assert len(cards) % 2 == 0, 'len(cards) must be even'
-    half = _______________
+    half = int(len(cards) / 2)
     shuffled = []
-    for i in _____________:
-        _________________
-        _________________
+    for i in range(0, half):
+        shuffled.append(cards[i])
+        shuffled.append(cards[half+i])
     return shuffled
 
 
