@@ -290,6 +290,9 @@ def pairs(lst):
     5 5
     """
     "*** YOUR CODE HERE ***"
+    for i in range(len(lst)):
+        for j in range(len(lst)):
+            yield lst[i], lst[j]
 
 
 class PairsIterator:
