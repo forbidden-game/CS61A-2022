@@ -351,7 +351,13 @@ def long_paths(tree, n):
     [Link(0, Link(11, Link(12, Link(13, Link(14)))))]
     """
     "*** YOUR CODE HERE ***"
-
+    paths = []
+    if tree.is_leaf() and n <= 0:
+        paths.append(Link(tree.label))
+    for b in tree.branches:
+        for path in long_paths(b, n-1):
+            paths.append(Link(tree.label, path))
+    return paths
 
 def flip_two(s):
     """
