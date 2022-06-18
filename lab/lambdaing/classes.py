@@ -25,6 +25,9 @@ class Card:
         """
         # BEGIN Problem 1
         "*** YOUR CODE HERE ***"
+        self.name = name
+        self.attack = attack
+        self.defense = defense
         # END Problem 1
 
     def power(self, opponent_card):
@@ -45,6 +48,7 @@ class Card:
         """
         # BEGIN Problem 1
         "*** YOUR CODE HERE ***"
+        return self.attack - opponent_card.defense
         # END Problem 1
 
     def effect(self, opponent_card, player, opponent):
@@ -85,6 +89,9 @@ class Player:
         self.name = name
         # BEGIN Problem 2
         "*** YOUR CODE HERE ***"
+        self.hand = []
+        for _ in range(5):
+            self.draw()
         # END Problem 2
 
     def draw(self):
@@ -101,6 +108,7 @@ class Player:
         assert not self.deck.is_empty(), 'Deck is empty!'
         # BEGIN Problem 2
         "*** YOUR CODE HERE ***"
+        self.hand.append(self.deck.draw())
         # END Problem 2
 
     def play(self, index):
@@ -119,6 +127,9 @@ class Player:
         """
         # BEGIN Problem 2
         "*** YOUR CODE HERE ***"
+        card = self.hand[index]
+        self.hand.__delitem__(index)
+        return card
         # END Problem 2
 
     def display_hand(self):

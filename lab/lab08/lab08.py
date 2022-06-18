@@ -359,6 +359,7 @@ def long_paths(tree, n):
             paths.append(Link(tree.label, path))
     return paths
 
+
 def flip_two(s):
     """
     >>> one_lnk = Link(1)
@@ -371,9 +372,34 @@ def flip_two(s):
     Link(2, Link(1, Link(4, Link(3, Link(5)))))
     """
     "*** YOUR CODE HERE ***"
-
+    if s.rest:
+        rest = s.rest.first
+        s.rest.first = s.first
+        s.first = rest
+        flip_two(s.rest.rest)
     # For an extra challenge, try writing out an iterative approach as well below!
+
+def flip_two(s):
+    """
+    >>> one_lnk = Link(1)
+    >>> flip_two(one_lnk)
+    >>> one_lnk
+    Link(1)
+    >>> lnk = Link(1, Link(2, Link(3, Link(4, Link(5)))))
+    >>> flip_two(lnk)
+    >>> lnk
+    Link(2, Link(1, Link(4, Link(3, Link(5)))))
+    """
     "*** YOUR CODE HERE ***"
+    p1 = s
+    p2 = s.rest
+    while p2:
+        rest = p2.first
+        p2.first = p1.first
+        p1.first = rest
+        p1 = p2.rest
+        p2 = p2.rest.rest
+
 
 
 class Link:
