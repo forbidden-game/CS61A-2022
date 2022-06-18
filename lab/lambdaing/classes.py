@@ -170,6 +170,8 @@ class AICard(Card):
         """
         # BEGIN Problem 3
         "*** YOUR CODE HERE ***"
+        for _ in range(2):
+            player.draw()
         # END Problem 3
         # You should add your implementation above this.
         print(f"{self.name} allows me to draw two cards!")
@@ -213,6 +215,9 @@ class TutorCard(Card):
         """
         # BEGIN Problem 4
         added = None
+        if player.hand:
+            player.hand.append(player.hand[0].copy())
+            added = True
         # END Problem 4
         # You should add your implementation above this.
         if added:
@@ -223,6 +228,9 @@ class TutorCard(Card):
         Create a copy of this card.
         """
         return TutorCard(self.name, self.attack, self.defense)
+
+    def power(self, opponent_card):
+        return -float('inf')
 
 
 class TACard(Card):
@@ -252,6 +260,14 @@ class TACard(Card):
         """
         # BEGIN Problem 5
         best_card = None
+        if player.hand:
+            highest = -100000
+            for _ in range(len(player.hand)):
+                if player.hand[_].power(Card("card1", 0, 0)) > highest:
+                    best_card = player.hand[_]
+            self.attack += best_card.attack
+            self.defense += best_card.defense
+            player.hand.remove(best_card)
         # END Problem 5
         if best_card:
             print(f"{self.name} discards {best_card.name} from my hand to increase its own power!")
@@ -291,6 +307,11 @@ class InstructorCard(Card):
         """
         # BEGIN Problem 6
         readd = None
+        self.attack -= 1000
+        self.defense -= 1000
+        if self.attack>= 0 or self.defense >= 0:
+            player.hand.append(self)
+            readd = True
         # END Problem 6
         # You should add your implementation above this.
         if readd:
