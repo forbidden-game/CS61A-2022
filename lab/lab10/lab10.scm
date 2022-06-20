@@ -13,4 +13,8 @@
 
 (define (square n) (* n n))
 
-(define (pow base exp) 'YOUR-CODE-HERE)
+(define (pow base exp)
+    (cond
+        ((= exp 1) base)
+        ((even? exp) (square(pow base (/ exp 2))))
+        ((odd? exp) (* base (square (pow base (/ (- exp 1) 2)))))))
