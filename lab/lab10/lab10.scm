@@ -8,7 +8,8 @@
 (define (make-adder num)
     (lambda (inc) (+ num inc)))
 
-(define (composed f g) 'YOUR-CODE-HERE)
+(define (composed f g)
+    (lambda (x) (f (g x))))
 
 (define (square n) (* n n))
 
