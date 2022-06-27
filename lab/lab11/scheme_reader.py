@@ -110,7 +110,11 @@ def buffer_lines(lines, prompt='scm> ', show_prompt=False):
 
 
 def read_line(line):
-    """Read a single string LINE as a Scheme expression."""
+    """Read a single string LINE as a Scheme expression.
+    >>> expr = read_line('(+ 2 (+ 2 2))')
+    >>> expr
+    Pair('+', Pair(2, Pair(Pair('+', Pair(2, Pair(2, nil))), nil)))
+    """
     buf = Buffer(tokenize_lines([line]))
     while buf.end_of_line():
         buf.pop_first()

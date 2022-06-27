@@ -14,11 +14,11 @@ import scheme_forms
 def scheme_eval(expr, env, _=None):  # Optional third argument is ignored
     """Evaluate Scheme expression EXPR in Frame ENV.
 
-    >>> expr = read_line('(+ 2 2)')
+    >>> expr = read_line('(+ 2 (+ 2 2))')
     >>> expr
-    Pair('+', Pair(2, Pair(2, nil)))
+    Pair('+', Pair(2, Pair(Pair('+', Pair(2, Pair(2, nil))), nil)))
     >>> scheme_eval(expr, create_global_frame())
-    4
+    8
     """
     # Evaluate atoms
     if scheme_symbolp(expr):
@@ -35,6 +35,9 @@ def scheme_eval(expr, env, _=None):  # Optional third argument is ignored
     else:
         # BEGIN PROBLEM 3
         "*** YOUR CODE HERE ***"
+        eval_expr = scheme_eval(first, env)
+        args = rest.map(lambda e: scheme_eval(e, env))
+        return scheme_apply(eval_expr, args, env)
         # END PROBLEM 3
 
 
@@ -45,6 +48,18 @@ def scheme_apply(procedure, args, env):
     if isinstance(procedure, BuiltinProcedure):
         # BEGIN PROBLEM 2
         "*** YOUR CODE HERE ***"
+        args_list = []
+        """Should consider nested Pair?"""
+        while args != nil:
+            args_list.append(args.first)
+            args = args.rest
+        if procedure.expect_env:
+            args_list.append(env)
+
+        try:
+            return procedure.py_func(*args_list)
+        except TypeError:
+            raise SchemeError("incorrect number of arguments")
         # END PROBLEM 2
     elif isinstance(procedure, LambdaProcedure):
         # BEGIN PROBLEM 9

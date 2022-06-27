@@ -43,6 +43,10 @@ def scheme_stringp(x):
 
 
 def scheme_symbolp(x):
+    """
+       >>> scheme_symbolp('+')
+       True
+       """
     return isinstance(x, str) and not scheme_stringp(x)
 
 
