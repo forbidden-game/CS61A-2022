@@ -92,7 +92,7 @@ def validate_form(expr, min, max=float('inf')):
     than MAX (default: no maximum). Raises a SchemeError if this is not the
     case.
 
-    >>> validate_form(read_line('(a b)'), 2)
+    >>> validate_form(Pair(1, Pair(Pair(2, Pair(3, nil)), nil)), 2, 2)
     """
     if not scheme_listp(expr):
         raise SchemeError('badly formed expression: ' + repl_str(expr))
