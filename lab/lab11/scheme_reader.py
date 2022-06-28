@@ -114,6 +114,9 @@ def read_line(line):
     >>> expr = read_line('(+ 2 (+ 2 2))')
     >>> expr
     Pair('+', Pair(2, Pair(Pair('+', Pair(2, Pair(2, nil))), nil)))
+    >>> expr = read_line('((+ x 2))')
+    >>> expr
+    Pair(Pair('+', Pair('x', Pair(2, nil))), nil)
     """
     buf = Buffer(tokenize_lines([line]))
     while buf.end_of_line():
