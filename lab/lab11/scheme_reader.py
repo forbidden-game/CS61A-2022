@@ -114,7 +114,7 @@ def read_line(line):
     >>> expr = read_line('(+ 2 (+ 2 2))')
     >>> expr
     Pair('+', Pair(2, Pair(Pair('+', Pair(2, Pair(2, nil))), nil)))
-    >>> expr = read_line('((+ x 2))')
+    >>> expr = read_line('((print 3) (+ 2 3) (3 4))')
     >>> expr
     Pair(Pair('+', Pair('x', Pair(2, nil))), nil)
     """
