@@ -134,6 +134,16 @@ def do_and_form(expressions, env):
     """
     # BEGIN PROBLEM 12
     "*** YOUR CODE HERE ***"
+    if not expressions:
+        return True
+    while expressions.rest != nil:
+        if is_scheme_true(scheme_eval(expressions.first, env)):
+            expressions = expressions.rest
+        else:
+            return False
+
+    last = scheme_eval(expressions.first, env)
+    return last if is_scheme_true(last) else False
     # END PROBLEM 12
 
 
@@ -153,6 +163,13 @@ def do_or_form(expressions, env):
     """
     # BEGIN PROBLEM 12
     "*** YOUR CODE HERE ***"
+    while expressions != nil:
+        result = scheme_eval(expressions.first, env)
+        if is_scheme_false(result):
+            expressions = expressions.rest
+        else:
+            return result
+    return False
     # END PROBLEM 12
 
 
