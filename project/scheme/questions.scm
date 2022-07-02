@@ -7,7 +7,12 @@
 ;; Returns a list of two-element lists
 (define (enumerate s)
   ; BEGIN PROBLEM 15
-  'replace-this-line
+  (define (enumerate2 s num)
+      (if (null? s)
+          nil
+          (cons (list num (car s)) (enumerate2 (cdr s) (+ num 1)))
+      ))
+  (enumerate2 s 0)
   )
   ; END PROBLEM 15
 
