@@ -95,17 +95,10 @@ def eval_all(expressions, env):
     # BEGIN PROBLEM 6
     if expressions is nil:
         return None
-    else:
-        first = expressions.first
-        rest = expressions.rest
-        if rest != nil:
-            scheme_eval(first, env)
-            while rest.rest != nil:
-                scheme_eval(rest.first, env)
-                rest = rest.rest
-            return scheme_eval(rest.first, env)
-        else:
-            return scheme_eval(first, env)
+    while expressions.rest:
+        scheme_eval(expressions.first, env)
+        expressions = expressions.rest
+    return scheme_eval(expressions.first, env, True)
     # END PROBLEM 6
 
 
@@ -144,6 +137,14 @@ def optimize_tail_calls(unoptimized_scheme_eval):
         result = Unevaluated(expr, env)
         # BEGIN PROBLEM EC
         "*** YOUR CODE HERE ***"
+        """
+        化递归为迭代，实在精妙。
+        把程序执行的整个流程在脑海中多过几遍，就能把这个方法理解。
+        """
+        while isinstance(result, Unevaluated):
+            result = unoptimized_scheme_eval(result.expr, result.env)
+
+        return result
         # END PROBLEM EC
     return optimized_eval
 
@@ -151,4 +152,4 @@ def optimize_tail_calls(unoptimized_scheme_eval):
 ################################################################
 # Uncomment the following line to apply tail call optimization #
 ################################################################
-# scheme_eval = optimize_tail_calls(scheme_eval)
+scheme_eval = optimize_tail_calls(scheme_eval)
